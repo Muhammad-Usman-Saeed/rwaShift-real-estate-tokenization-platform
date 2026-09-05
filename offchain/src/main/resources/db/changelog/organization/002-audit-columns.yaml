@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: organization-002-audit-columns
+      author: rwashift
+      changes:
+        - addColumn:
+            tableName: organization
+            columns:
+              - column: { name: created_by, type: VARCHAR(26) }
+              - column: { name: updated_by, type: VARCHAR(26) }

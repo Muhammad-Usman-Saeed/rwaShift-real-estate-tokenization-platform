@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: legalstructure-001-legal-structure
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: legal_structure
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: asset_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: legal_entity_name, type: VARCHAR(300), constraints: { nullable: false } }
+              - column: { name: entity_type, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: jurisdiction, type: VARCHAR(100), constraints: { nullable: false } }
+              - column: { name: registration_number, type: VARCHAR(100) }
+              - column: { name: relationship_to_asset, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: investment_instrument_type, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: legal_structure
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_legalstructure_organization
+        - addForeignKeyConstraint:
+            baseTableName: legal_structure
+            baseColumnNames: asset_id
+            referencedTableName: asset
+            referencedColumnNames: id
+            constraintName: fk_legalstructure_asset
+        - createIndex:
+            tableName: legal_structure
+            indexName: idx_legalstructure_organization
+            columns:
+              - column: { name: organization_id }
+        - createIndex:
+            tableName: legal_structure
+            indexName: idx_legalstructure_asset
+            columns:
+              - column: { name: asset_id }

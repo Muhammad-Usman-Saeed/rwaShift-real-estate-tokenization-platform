@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: ownership-001-ownership-record
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: ownership_record
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: investor_id, type: VARCHAR(26) }
+              - column: { name: offering_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: wallet_address, type: VARCHAR(42), constraints: { nullable: false } }
+              - column: { name: token_address, type: VARCHAR(42), constraints: { nullable: false } }
+              - column: { name: units, type: "DECIMAL(38,0)", constraints: { nullable: false } }
+              - column: { name: last_synced_block, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: ownership_record
+            columnNames: token_address, wallet_address
+            constraintName: uq_ownership_token_wallet
+        - createIndex:
+            tableName: ownership_record
+            indexName: idx_ownership_offering
+            columns:
+              - column: { name: offering_id }
+        - createIndex:
+            tableName: ownership_record
+            indexName: idx_ownership_investor
+            columns:
+              - column: { name: investor_id }

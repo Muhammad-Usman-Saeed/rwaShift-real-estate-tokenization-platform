@@ -1,0 +1,39 @@
+databaseChangeLog:
+  # Include order matters where a later unit's foreign keys reference an earlier unit's tables
+  # (e.g. iam.organization_membership -> organization.organization). Each capability still owns
+  # and versions only its own changelog file.
+  - include: { file: db/changelog/organization/001-organization.yaml }
+  - include: { file: db/changelog/iam/001-platform-user.yaml }
+  - include: { file: db/changelog/iam/002-organization-membership.yaml }
+  - include: { file: db/changelog/iam/003-authorization-server-schema.yaml }
+  - include: { file: db/changelog/iam/004-membership-organization-fk.yaml }
+  - include: { file: db/changelog/iam/007-wallet-login-nonce.yaml }
+  - include: { file: db/changelog/iam/008-platform-user-identity.yaml }
+  - include: { file: db/changelog/asset/001-asset.yaml }
+  - include: { file: db/changelog/legalstructure/001-legal-structure.yaml }
+  - include: { file: db/changelog/offering/001-offering.yaml }
+  - include: { file: db/changelog/investor/001-investor.yaml }
+  - include: { file: db/changelog/kyc/001-kyc-case.yaml }
+  - include: { file: db/changelog/compliance/001-eligibility-decision.yaml }
+  - include: { file: db/changelog/investment/001-investment.yaml }
+  - include: { file: db/changelog/tokenization/001-tokenization.yaml }
+  - include: { file: db/changelog/ownership/001-ownership-record.yaml }
+  - include: { file: db/changelog/distribution/001-distribution.yaml }
+  - include: { file: db/changelog/document/001-document-metadata.yaml }
+  - include: { file: db/changelog/audit/001-audit-log-entry.yaml }
+  - include: { file: db/changelog/activity/001-platform-visit.yaml }
+  # created_by/updated_by actor-attribution columns (see ADR notes in shared.domain.Auditable),
+  # added after the initial per-unit tables so every changeset above stays untouched.
+  - include: { file: db/changelog/organization/002-audit-columns.yaml }
+  - include: { file: db/changelog/iam/005-platform-user-audit-columns.yaml }
+  - include: { file: db/changelog/iam/006-organization-membership-audit-columns.yaml }
+  - include: { file: db/changelog/asset/002-audit-columns.yaml }
+  - include: { file: db/changelog/legalstructure/002-audit-columns.yaml }
+  - include: { file: db/changelog/offering/002-audit-columns.yaml }
+  - include: { file: db/changelog/investor/002-audit-columns.yaml }
+  - include: { file: db/changelog/investment/002-audit-columns.yaml }
+  - include: { file: db/changelog/investment/003-crypto-payment-columns.yaml }
+  - include: { file: db/changelog/tokenization/002-contract-deployment-audit-columns.yaml }
+  - include: { file: db/changelog/tokenization/003-organization-wallet.yaml }
+  - include: { file: db/changelog/distribution/002-audit-columns.yaml }
+  - include: { file: db/changelog/document/002-audit-columns.yaml }

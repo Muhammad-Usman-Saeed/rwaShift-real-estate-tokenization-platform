@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: iam-008-platform-user-identity
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: platform_user_identity
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: user_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: provider, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: identifier, type: VARCHAR(320), constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: platform_user_identity
+            columnNames: provider, identifier
+            constraintName: uq_platform_user_identity_provider_identifier
+        - createIndex:
+            tableName: platform_user_identity
+            indexName: idx_platform_user_identity_user
+            columns:
+              - column: { name: user_id }

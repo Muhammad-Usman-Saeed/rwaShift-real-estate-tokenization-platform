@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: tokenization-002-contract-deployment-audit-columns
+      author: rwashift
+      changes:
+        - addColumn:
+            tableName: contract_deployment
+            columns:
+              - column: { name: version, type: BIGINT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: created_by, type: VARCHAR(26) }
+              - column: { name: updated_by, type: VARCHAR(26) }

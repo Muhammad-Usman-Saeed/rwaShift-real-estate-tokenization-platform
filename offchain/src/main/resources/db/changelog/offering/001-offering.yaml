@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: offering-001-offering
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: offering
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: asset_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: legal_structure_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: name, type: VARCHAR(300), constraints: { nullable: false } }
+              - column: { name: target_raise, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: currency, type: VARCHAR(3), constraints: { nullable: false } }
+              - column: { name: total_units, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: unit_price, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: minimum_investment, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: offered_interest_percentage, type: "DECIMAL(7,4)", constraints: { nullable: false } }
+              - column: { name: opening_date, type: TIMESTAMP }
+              - column: { name: closing_date, type: TIMESTAMP }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: units_issued, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: offering
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_offering_organization
+        - addForeignKeyConstraint:
+            baseTableName: offering
+            baseColumnNames: asset_id
+            referencedTableName: asset
+            referencedColumnNames: id
+            constraintName: fk_offering_asset
+        - addForeignKeyConstraint:
+            baseTableName: offering
+            baseColumnNames: legal_structure_id
+            referencedTableName: legal_structure
+            referencedColumnNames: id
+            constraintName: fk_offering_legalstructure
+        - createIndex:
+            tableName: offering
+            indexName: idx_offering_organization
+            columns:
+              - column: { name: organization_id }

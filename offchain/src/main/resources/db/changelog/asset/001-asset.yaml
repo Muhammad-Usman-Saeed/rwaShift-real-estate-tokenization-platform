@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: asset-001-asset
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: asset
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: name, type: VARCHAR(300), constraints: { nullable: false } }
+              - column: { name: type, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: description, type: VARCHAR(4000) }
+              - column: { name: location, type: VARCHAR(500), constraints: { nullable: false } }
+              - column: { name: valuation, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: currency, type: VARCHAR(3), constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: asset
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_asset_organization
+        - createIndex:
+            tableName: asset
+            indexName: idx_asset_organization
+            columns:
+              - column: { name: organization_id }

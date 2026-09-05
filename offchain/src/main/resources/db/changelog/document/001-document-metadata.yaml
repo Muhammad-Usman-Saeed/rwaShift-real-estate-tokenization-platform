@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: document-001-document-metadata
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: document_metadata
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: resource_type, type: VARCHAR(64), constraints: { nullable: false } }
+              - column: { name: resource_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: filename, type: VARCHAR(300), constraints: { nullable: false } }
+              - column: { name: content_type, type: VARCHAR(100), constraints: { nullable: false } }
+              - column: { name: storage_key, type: VARCHAR(500), constraints: { nullable: false } }
+              - column: { name: sha256, type: VARCHAR(64), constraints: { nullable: false } }
+              - column: { name: classification, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: document_metadata
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_document_organization
+        - createIndex:
+            tableName: document_metadata
+            indexName: idx_document_resource
+            columns:
+              - column: { name: resource_type }
+              - column: { name: resource_id }

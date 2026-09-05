@@ -1,0 +1,21 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "overrides": [
+    {
+      "files": ["src/app/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}", "src/providers/**/*.{ts,tsx}"],
+      "rules": {
+        "no-restricted-imports": [
+          "warn",
+          {
+            "patterns": [
+              {
+                "group": ["*/lib/api/client"],
+                "message": "Import capability clients (lib/api/<capability>.ts) instead of the raw HTTP client from components."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

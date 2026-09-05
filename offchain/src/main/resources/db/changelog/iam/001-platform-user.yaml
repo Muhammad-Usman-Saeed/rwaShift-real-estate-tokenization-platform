@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: iam-001-platform-user
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: platform_user
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: email, type: VARCHAR(320), constraints: { nullable: false, unique: true, uniqueConstraintName: uq_platform_user_email } }
+              - column: { name: password_hash, type: VARCHAR(100), constraints: { nullable: false } }
+              - column: { name: display_name, type: VARCHAR(200), constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: global_role, type: VARCHAR(32) }
+              - column: { name: investor_id, type: VARCHAR(26) }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }

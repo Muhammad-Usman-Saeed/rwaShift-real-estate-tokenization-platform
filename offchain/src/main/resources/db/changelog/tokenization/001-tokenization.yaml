@@ -1,0 +1,92 @@
+databaseChangeLog:
+  - changeSet:
+      id: tokenization-001-contract-deployment
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: contract_deployment
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: offering_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: network, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: chain_id, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: contract_type, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: contract_address, type: VARCHAR(42) }
+              - column: { name: deployment_tx_hash, type: VARCHAR(66) }
+              - column: { name: deployment_block, type: BIGINT }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - createIndex:
+            tableName: contract_deployment
+            indexName: idx_contractdeployment_offering
+            columns:
+              - column: { name: offering_id }
+        - createIndex:
+            tableName: contract_deployment
+            indexName: idx_contractdeployment_type_status
+            columns:
+              - column: { name: contract_type }
+              - column: { name: status }
+
+  - changeSet:
+      id: tokenization-001-blockchain-transaction
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: blockchain_transaction
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: business_reference_type, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: business_reference_id, type: VARCHAR(60), constraints: { nullable: false } }
+              - column: { name: network, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: chain_id, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: contract_address, type: VARCHAR(42) }
+              - column: { name: method, type: VARCHAR(100), constraints: { nullable: false } }
+              - column: { name: tx_hash, type: VARCHAR(66) }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: submitted_at, type: TIMESTAMP }
+              - column: { name: confirmed_at, type: TIMESTAMP }
+              - column: { name: block_number, type: BIGINT }
+              - column: { name: failure_reason, type: VARCHAR(1000) }
+              - column: { name: retry_count, type: INT, constraints: { nullable: false } }
+        - createIndex:
+            tableName: blockchain_transaction
+            indexName: idx_blockchaintx_status
+            columns:
+              - column: { name: status }
+        - createIndex:
+            tableName: blockchain_transaction
+            indexName: idx_blockchaintx_reference
+            columns:
+              - column: { name: business_reference_type }
+              - column: { name: business_reference_id }
+
+  - changeSet:
+      id: tokenization-001-blockchain-event
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: blockchain_event
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: contract_address, type: VARCHAR(42), constraints: { nullable: false } }
+              - column: { name: event_name, type: VARCHAR(100), constraints: { nullable: false } }
+              - column: { name: tx_hash, type: VARCHAR(66), constraints: { nullable: false } }
+              - column: { name: log_index, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: block_number, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: payload, type: VARCHAR(4000) }
+              - column: { name: processed_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: blockchain_event
+            columnNames: tx_hash, log_index
+            constraintName: uq_blockchainevent_tx_logindex
+
+  - changeSet:
+      id: tokenization-001-indexer-cursor
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: indexer_cursor
+            columns:
+              - column: { name: contract_address, type: VARCHAR(42), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: last_processed_block, type: BIGINT, constraints: { nullable: false } }

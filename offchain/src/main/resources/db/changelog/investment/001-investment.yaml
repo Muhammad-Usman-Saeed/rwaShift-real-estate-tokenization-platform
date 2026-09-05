@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: investment-001-investment
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: investment
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: investor_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: offering_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: amount, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: currency, type: VARCHAR(3), constraints: { nullable: false } }
+              - column: { name: unit_price, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: units, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: payment_status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: token_issuance_status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: idempotency_key, type: VARCHAR(100), constraints: { nullable: false, unique: true, uniqueConstraintName: uq_investment_idempotency } }
+              - column: { name: failure_reason, type: VARCHAR(1000) }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: investment
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_investment_organization
+        - addForeignKeyConstraint:
+            baseTableName: investment
+            baseColumnNames: investor_id
+            referencedTableName: investor
+            referencedColumnNames: id
+            constraintName: fk_investment_investor
+        - addForeignKeyConstraint:
+            baseTableName: investment
+            baseColumnNames: offering_id
+            referencedTableName: offering
+            referencedColumnNames: id
+            constraintName: fk_investment_offering
+        - createIndex:
+            tableName: investment
+            indexName: idx_investment_organization
+            columns:
+              - column: { name: organization_id }
+        - createIndex:
+            tableName: investment
+            indexName: idx_investment_investor
+            columns:
+              - column: { name: investor_id }
+        - createIndex:
+            tableName: investment
+            indexName: idx_investment_offering
+            columns:
+              - column: { name: offering_id }

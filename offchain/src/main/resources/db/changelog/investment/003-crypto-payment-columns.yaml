@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: investment-003-crypto-payment-columns
+      author: rwashift
+      changes:
+        - addColumn:
+            tableName: investment
+            columns:
+              - column: { name: payment_method, type: VARCHAR(32), defaultValue: BANK_TRANSFER, constraints: { nullable: false } }
+              - column: { name: payment_tx_hash, type: VARCHAR(66) }
+              - column: { name: payer_wallet_address, type: VARCHAR(42) }

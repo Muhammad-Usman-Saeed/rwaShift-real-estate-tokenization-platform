@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: audit-001-audit-log-entry
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: audit_log_entry
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: actor_user_id, type: VARCHAR(26) }
+              - column: { name: organization_id, type: VARCHAR(26) }
+              - column: { name: action, type: VARCHAR(100), constraints: { nullable: false } }
+              - column: { name: resource_type, type: VARCHAR(64), constraints: { nullable: false } }
+              - column: { name: resource_id, type: VARCHAR(60), constraints: { nullable: false } }
+              - column: { name: previous_state, type: VARCHAR(100) }
+              - column: { name: new_state, type: VARCHAR(100) }
+              - column: { name: correlation_id, type: VARCHAR(100) }
+              - column: { name: ip_address, type: VARCHAR(45) }
+              - column: { name: blockchain_tx_hash, type: VARCHAR(66) }
+              - column: { name: occurred_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - createIndex:
+            tableName: audit_log_entry
+            indexName: idx_audit_organization
+            columns:
+              - column: { name: organization_id }
+        - createIndex:
+            tableName: audit_log_entry
+            indexName: idx_audit_resource
+            columns:
+              - column: { name: resource_type }
+              - column: { name: resource_id }

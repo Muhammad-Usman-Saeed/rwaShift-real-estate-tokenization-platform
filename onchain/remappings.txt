@@ -1,0 +1,5 @@
+@onchain-id/solidity/=lib/solidity/
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
+@trex/=lib/T-REX/contracts/
+forge-std/=lib/forge-std/src/

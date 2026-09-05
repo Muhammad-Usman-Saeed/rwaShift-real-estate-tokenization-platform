@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: distribution-001-distribution
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: distribution
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: offering_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: total_amount, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+              - column: { name: currency, type: VARCHAR(3), constraints: { nullable: false } }
+              - column: { name: record_date, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: distribution
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_distribution_organization
+        - addForeignKeyConstraint:
+            baseTableName: distribution
+            baseColumnNames: offering_id
+            referencedTableName: offering
+            referencedColumnNames: id
+            constraintName: fk_distribution_offering
+
+  - changeSet:
+      id: distribution-001-distribution-entitlement
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: distribution_entitlement
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: distribution_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: investor_id, type: VARCHAR(26) }
+              - column: { name: wallet_address, type: VARCHAR(42), constraints: { nullable: false } }
+              - column: { name: units_at_record_date, type: "DECIMAL(38,0)", constraints: { nullable: false } }
+              - column: { name: entitlement_amount, type: "DECIMAL(19,4)", constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: distribution_entitlement
+            baseColumnNames: distribution_id
+            referencedTableName: distribution
+            referencedColumnNames: id
+            constraintName: fk_entitlement_distribution
+        - createIndex:
+            tableName: distribution_entitlement
+            indexName: idx_entitlement_distribution
+            columns:
+              - column: { name: distribution_id }

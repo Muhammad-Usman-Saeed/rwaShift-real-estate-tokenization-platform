@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: iam-007-wallet-login-nonce
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: wallet_login_nonce
+            columns:
+              - column: { name: wallet_address, type: VARCHAR(42), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: nonce, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: expires_at, type: TIMESTAMP, constraints: { nullable: false } }

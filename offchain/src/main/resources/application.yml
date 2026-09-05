@@ -1,0 +1,97 @@
+spring:
+  application:
+    name: rwashift-platform
+
+  datasource:
+    # allowPublicKeyRetrieval is required alongside useSSL=false: MySQL 8's default
+    # caching_sha2_password auth plugin needs the server's RSA public key to encrypt credentials
+    # over an unencrypted connection, and won't fetch it automatically unless this is set.
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:rwashift}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USERNAME:rwashift}
+    password: ${DB_PASSWORD:rwashift}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Liquibase owns the schema. Hibernate only ever validates it matches the entity
+      # mapping — see ADR-006. Never set this to `update` or `create`.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        format_sql: false
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_ISSUER_URI:http://localhost:8080}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+rwashift:
+  blockchain:
+    network: ${BLOCKCHAIN_NETWORK:anvil}
+    chain-id: ${BLOCKCHAIN_CHAIN_ID:31337}
+    rpc-url: ${BLOCKCHAIN_RPC_URL:http://127.0.0.1:8545}
+    confirmations-required: ${BLOCKCHAIN_CONFIRMATIONS:1}
+    token-factory-address: ${TOKEN_FACTORY_ADDRESS:}
+    identity-gateway-address: ${IDENTITY_GATEWAY_ADDRESS:}
+    distribution-registry-address: ${DISTRIBUTION_REGISTRY_ADDRESS:}
+    agent-private-key: ${BLOCKCHAIN_AGENT_PRIVATE_KEY:}
+    poll-interval-ms: ${BLOCKCHAIN_POLL_INTERVAL_MS:4000}
+    usdc-token-address: ${USDC_TOKEN_ADDRESS:}
+    payment-collection-address: ${PAYMENT_COLLECTION_ADDRESS:}
+    payment-router-address: ${PAYMENT_ROUTER_ADDRESS:}
+    org-wallet-master-key: ${ORG_WALLET_MASTER_KEY:}
+  documents:
+    storage:
+      root-path: ${DOCUMENT_STORAGE_ROOT:./data/documents}
+  authorization-server:
+    issuer: ${OAUTH2_ISSUER_URI:http://localhost:8080}
+  # Where form-login sends a user who authenticated with no saved OAuth2 request to return to
+  # (i.e. they hit this server's /login directly instead of starting at the frontend) — see
+  # ResourceServerConfig's formLogin customizer.
+  frontend-url: ${FRONTEND_URL:http://localhost:3000}
+  jwt:
+    # Persisted across restarts — see AuthorizationServerConfig's Javadoc: regenerating this on
+    # every startup would silently invalidate every token issued before the restart.
+    signing-key-path: ${JWT_SIGNING_KEY_PATH:./data/jwt-signing-key}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+
+otel:
+  service:
+    name: rwashift-platform
+  exporter:
+    otlp:
+      endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://localhost:4318}
+
+logging:
+  pattern:
+    level: "%5p [%X{correlationId}] [traceId=%X{trace_id} spanId=%X{span_id}]"
+  level:
+    # DEBUG by default locally so `docker compose logs app` shows what's actually happening;
+    # override per-deployment via LOG_LEVEL (e.g. INFO in a shared/staging environment).
+    com.rwashift.platform: ${LOG_LEVEL:DEBUG}
+    org.springframework.security: ${SECURITY_LOG_LEVEL:INFO}
+    org.springframework.security.oauth2: ${SECURITY_LOG_LEVEL:INFO}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

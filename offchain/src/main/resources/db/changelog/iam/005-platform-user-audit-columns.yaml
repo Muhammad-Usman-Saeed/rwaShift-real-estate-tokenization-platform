@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: iam-005-platform-user-audit-columns
+      author: rwashift
+      changes:
+        - addColumn:
+            tableName: platform_user
+            columns:
+              - column: { name: updated_at, type: TIMESTAMP, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: created_by, type: VARCHAR(26) }
+              - column: { name: updated_by, type: VARCHAR(26) }

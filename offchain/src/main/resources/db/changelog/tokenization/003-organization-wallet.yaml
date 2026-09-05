@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: tokenization-003-organization-wallet
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: organization_wallet
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: organization_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: wallet_address, type: VARCHAR(42), constraints: { nullable: false } }
+              - column: { name: encrypted_private_key, type: VARCHAR(512), constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: created_by, type: VARCHAR(26) }
+              - column: { name: updated_by, type: VARCHAR(26) }
+        - addUniqueConstraint:
+            tableName: organization_wallet
+            columnNames: organization_id
+            constraintName: uq_organizationwallet_organization

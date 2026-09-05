@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: investor-001-investor
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: investor
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: user_id, type: VARCHAR(26), constraints: { nullable: false, unique: true, uniqueConstraintName: uq_investor_user } }
+              - column: { name: investor_type, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: display_name, type: VARCHAR(300), constraints: { nullable: false } }
+              - column: { name: country, type: VARCHAR(2), constraints: { nullable: false } }
+              - column: { name: date_of_birth, type: DATE }
+              - column: { name: entity_registration_number, type: VARCHAR(100) }
+              - column: { name: primary_wallet_address, type: VARCHAR(42) }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: investor
+            baseColumnNames: user_id
+            referencedTableName: platform_user
+            referencedColumnNames: id
+            constraintName: fk_investor_user
+
+  - changeSet:
+      id: investor-001-linked-wallet
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: investor_linked_wallet
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: investor_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: wallet_address, type: VARCHAR(42), constraints: { nullable: false, unique: true, uniqueConstraintName: uq_wallet_address } }
+              - column: { name: is_primary, type: BIT, constraints: { nullable: false } }
+              - column: { name: linked_at, type: TIMESTAMP, constraints: { nullable: false } }
+        - addForeignKeyConstraint:
+            baseTableName: investor_linked_wallet
+            baseColumnNames: investor_id
+            referencedTableName: investor
+            referencedColumnNames: id
+            constraintName: fk_linkedwallet_investor
+        - createIndex:
+            tableName: investor_linked_wallet
+            indexName: idx_linkedwallet_investor
+            columns:
+              - column: { name: investor_id }

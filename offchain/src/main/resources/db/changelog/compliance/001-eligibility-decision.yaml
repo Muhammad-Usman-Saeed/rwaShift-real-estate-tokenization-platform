@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: compliance-001-eligibility-decision
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: eligibility_decision
+            columns:
+              - column: { name: id, type: VARCHAR(26), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: investor_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: offering_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(32), constraints: { nullable: false } }
+              - column: { name: evaluated_at, type: TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: identity_registered, type: BIT, constraints: { nullable: false } }
+              - column: { name: version, type: BIGINT, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: eligibility_decision
+            columnNames: investor_id, offering_id
+            constraintName: uq_eligibility_investor_offering
+
+  - changeSet:
+      id: compliance-001-eligibility-decision-reason
+      author: rwashift
+      changes:
+        - createTable:
+            tableName: eligibility_decision_reason
+            columns:
+              - column: { name: decision_id, type: VARCHAR(26), constraints: { nullable: false } }
+              - column: { name: reason_code, type: VARCHAR(100) }
+        - addForeignKeyConstraint:
+            baseTableName: eligibility_decision_reason
+            baseColumnNames: decision_id
+            referencedTableName: eligibility_decision
+            referencedColumnNames: id
+            constraintName: fk_eligibilityreason_decision

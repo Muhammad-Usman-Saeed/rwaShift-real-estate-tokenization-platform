@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: iam-004-membership-organization-fk
+      author: rwashift
+      comment: Requires the organization table to already exist (see db.changelog-master.yaml include order).
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: organization_membership
+            baseColumnNames: organization_id
+            referencedTableName: organization
+            referencedColumnNames: id
+            constraintName: fk_membership_organization
