@@ -14,9 +14,11 @@ export function Sidebar({ items, portalLabel }: { items: NavItem[]; portalLabel:
   return (
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-ink-800 bg-ink-950 lg:flex">
       <Link href={homeHref} className="flex h-16 items-center gap-2 border-b border-ink-800 px-5 hover:bg-ink-900">
-        <img src="/logo-mark.png" alt="" className="h-7 w-7 shrink-0 object-contain" />
+        <img src="/logo-rs-sharp.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
         <div className="leading-tight">
-          <p className="text-sm font-semibold text-white">rwaShift</p>
+          <p className="text-sm font-semibold text-white">
+            rwa<span className="text-gold-400">S</span>hift
+          </p>
           <p className="text-[10px] uppercase tracking-wide text-ink-400">{portalLabel}</p>
         </div>
       </Link>
@@ -29,7 +31,7 @@ export function Sidebar({ items, portalLabel }: { items: NavItem[]; portalLabel:
               href={item.href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors",
                 isActive ? "bg-ink-800 text-white" : "text-ink-300 hover:bg-ink-900 hover:text-white",
               )}
             >

@@ -33,7 +33,15 @@ export function AuthShell({ title, subtitle, children, footer }: { title: string
           }}
         />
         <div className="relative">
-          <img src="/logo.png" alt="rwaShift" className="h-14 w-auto object-contain object-left" />
+          <div className="flex items-center gap-3">
+            <img src="/logo-rs-sharp.png" alt="" className="h-14 w-14 shrink-0 object-contain" />
+            <div className="leading-tight">
+              <p className="text-xl font-medium text-white">
+                rwa<span className="text-gold-400">S</span>hift
+              </p>
+              <p className="text-xs text-ink-400">Turning RWA into investment opportunities</p>
+            </div>
+          </div>
 
           <h1 className="mt-16 max-w-sm text-3xl font-semibold leading-tight text-white">
             Real estate investment, structured on-chain.
@@ -46,7 +54,7 @@ export function AuthShell({ title, subtitle, children, footer }: { title: string
           <ul className="mt-10 flex flex-col gap-4">
             {FEATURES.map(({ icon: Icon, text }) => (
               <li key={text} className="flex items-start gap-3">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-ink-800 text-gold-300">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center bg-ink-800 text-gold-300">
                   <Icon className="h-4 w-4" />
                 </div>
                 <p className="mt-0.5 text-sm text-ink-200">{text}</p>
@@ -63,8 +71,10 @@ export function AuthShell({ title, subtitle, children, footer }: { title: string
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <img src="/logo-mark.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
-            <p className="text-sm font-semibold text-white">rwaShift</p>
+            <img src="/logo-rs-sharp.png" alt="" className="h-8 w-8 shrink-0 object-contain" />
+            <p className="text-sm font-semibold text-white">
+              rwa<span className="text-gold-400">S</span>hift
+            </p>
           </div>
 
           <div className="mb-7">
@@ -113,7 +123,7 @@ function NetworkStatusBadge() {
       type="button"
       onClick={() => setExpanded(true)}
       aria-label={isReachable ? `Connected to ${data?.network ?? "network"} — view network details` : "Network unavailable — view network details"}
-      className="flex w-full items-center justify-between gap-3 rounded-md border border-ink-800 bg-ink-950 px-4 py-3 text-left hover:border-ink-700"
+      className="flex w-full items-center justify-between gap-3 border border-ink-800 bg-ink-950 px-4 py-3 text-left hover:border-ink-700"
     >
       <div className="flex items-center gap-2.5">
         <span

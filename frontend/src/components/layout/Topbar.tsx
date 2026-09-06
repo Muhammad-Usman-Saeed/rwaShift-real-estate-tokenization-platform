@@ -41,7 +41,10 @@ export function Topbar({ title, mobileNavItems }: { title: string; mobileNavItem
             <Dialog.Overlay className="fixed inset-0 z-40 bg-ink-950/40 lg:hidden" />
             <Dialog.Content className="fixed inset-y-0 left-0 z-50 w-64 bg-ink-950 p-4 lg:hidden">
               <div className="mb-4 flex items-center justify-between">
-                <Dialog.Title className="text-sm font-semibold text-white">rwaShift</Dialog.Title>
+                <Dialog.Title className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <img src="/logo-rs-sharp.png" alt="" className="h-6 w-6 shrink-0 object-contain" />
+                  rwa<span className="text-gold-400">S</span>hift
+                </Dialog.Title>
                 <Dialog.Close aria-label="Close menu" className="text-ink-400">
                   <X className="h-5 w-5" />
                 </Dialog.Close>
@@ -52,7 +55,7 @@ export function Topbar({ title, mobileNavItems }: { title: string; mobileNavItem
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-ink-200 hover:bg-ink-900 hover:text-white"
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-ink-200 hover:bg-ink-900 hover:text-white"
                   >
                     {item.icon}
                     {item.label}
@@ -67,7 +70,7 @@ export function Topbar({ title, mobileNavItems }: { title: string; mobileNavItem
 
       <div className="flex items-center gap-3">
         {availablePortals.length > 1 && (
-          <div className="hidden items-center gap-1 rounded-md border border-surface-border bg-surface-subtle p-1 sm:flex">
+          <div className="hidden items-center gap-1 border border-surface-border bg-surface-subtle p-1 sm:flex">
             {availablePortals.map((portal) => (
               <PortalSwitchLink key={portal.key} href={portal.href} label={portal.label} />
             ))}
